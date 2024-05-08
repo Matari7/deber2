@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h2>Iniciar sesión</h2>
+    <form id="loginForm" action="login.php" method="post">
+        <div>
+            <label for="username">Usuario:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div>
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit">Iniciar sesión</button>
+        <p>¿No tienes una cuenta? <a href="register.html">Regístrate</a></p>
+    </form>
+
+    <script>
+        // Validación del formulario antes de enviar
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            if (!username || !password) {
+                alert("Por favor, complete todos los campos.");
+                event.preventDefault(); // Evitar el envío del formulario si hay campos vacíos
+            }
+        });
+
+        // Manejar la respuesta del servidor después de enviar el formulario
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Evitar que el formulario se envíe automáticamente
+
+            // Realizar una solicitud AJAX para enviar los datos del formulario
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "login.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.success) {
+                            // Redirigir al usuario a otra página
+                            window.location.href = "pagina.html";
+                        } else {
+                            alert(response.message);
+                        }
+                    } else {
+                        alert("Hubo un error al procesar su solicitud. Por favor, inténtelo de nuevo más tarde.");
+                    }
+                }
+            };
+            xhr.send("username=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password));
+        });
+        if (response.success) {
+    // Redirigir al usuario a otra página
+    window.location.href = "pagina.html";
+        }
+    </script>
+</body>
+</html>
